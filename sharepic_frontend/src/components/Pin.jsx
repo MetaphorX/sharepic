@@ -1,5 +1,5 @@
  import React, {useState} from 'react'
-import {Link, Navigate, useNavigate} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import {v4 as uuidv4} from 'uuid'
 import {MdDownloadForOffline} from 'react-icons/md'
 import {AiTwotoneDelete} from 'react-icons/ai';
@@ -13,12 +13,11 @@ const Pin = ({pin:{postedBy, image, _id, destination, save}}) => {
     const navigate = useNavigate();
     const user = fetchUser();
   
-    const alreadySaved = !!(save?.filter((item) =>item.postedBy._id == user.googleId))?.lenght;
+    const alreadySaved = !!(save?.filter((item) =>item.postedBy._id === user.googleId))?.length;
      
     const savePin = (id) =>{
         if(!alreadySaved){
             
-
             client
             .patch(id) 
             .setIfMissing({save: [] })
@@ -34,7 +33,7 @@ const Pin = ({pin:{postedBy, image, _id, destination, save}}) => {
             .commit()
             .then(() =>{
                 window.location.reload();
-            
+        
             });
         }
     }
@@ -51,8 +50,8 @@ const Pin = ({pin:{postedBy, image, _id, destination, save}}) => {
         <div
             onMouseEnter={()=> setPostHovered(true)}
             onMouseLeave={()=> setPostHovered(false)}
-            onClick={()=> navigate('/pin-detail/${_id}')}
-            className="relative cursor-zoom-in w-auto hover:shadpw-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out"
+            onClick={()=> navigate(`/pin-detail/${_id}`)}
+            className="relative cursor-zoom-in w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out"
         >
             <img className="rounded-lg w-full" alt="user-post" src={urlFor(image).width(250).url()}/>
             {postHovered && 
@@ -98,7 +97,7 @@ const Pin = ({pin:{postedBy, image, _id, destination, save}}) => {
                                 {destination.length > 20 ? destination.slice(8, 20) : destination.slice(8)}
                             </a>
                         )}
-                        {postedBy?._id == user.googleId &&(
+                        {postedBy?._id === user.googleId &&(
                             <button
                                 type="button"
                                 onClick ={(e) => {
